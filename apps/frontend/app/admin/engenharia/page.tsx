@@ -16,6 +16,8 @@ export default function EngenhariaPage() {
     nome: '',
     minL: 500, maxL: 3000,
     minA: 500, maxA: 2400,
+    larguraPadraoMm: 1200,
+    alturaPadraoMm: 1200,
     etapas: []
   };
 
@@ -92,6 +94,8 @@ export default function EngenhariaPage() {
       maxL: editando.maxL || 3000,
       minA: editando.minA || 500,
       maxA: editando.maxA || 2000,
+      larguraPadraoMm: editando.larguraPadraoMm || 1200,
+      alturaPadraoMm: editando.alturaPadraoMm || 1200,
       etapas: editando.etapas || []
     };
 
@@ -178,19 +182,17 @@ export default function EngenhariaPage() {
                   </div>
                 </div>
 
-                <div className="bg-red-50/50 p-4 rounded-xl border border-red-100">
-                  <div className="flex items-center text-red-800 font-bold mb-3 text-xs uppercase tracking-wide">
-                    <ShieldAlert className="w-4 h-4 mr-1 text-red-500" /> Travas de Altura (mm)
+                <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 grid grid-cols-2 gap-4">
+                  <div className="col-span-2 text-[10px] font-black text-gray-500 uppercase tracking-widest border-b border-gray-200 pb-2">
+                    📐 Dimensões do Projeto Padrão (referência para escalas)
                   </div>
-                  <div className="flex gap-4">
-                    <div className="flex-1">
-                      <label className="block text-[10px] text-red-400 font-bold mb-1">Mínima</label>
-                      <input type="number" className="w-full bg-white border border-red-200 rounded p-2 text-sm font-bold" value={editando.minA} onChange={e => setEditando({...editando, minA: parseFloat(e.target.value)})} />
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-[10px] text-red-400 font-bold mb-1">Máxima</label>
-                      <input type="number" className="w-full bg-white border border-red-200 rounded p-2 text-sm font-bold" value={editando.maxA} onChange={e => setEditando({...editando, maxA: parseFloat(e.target.value)})} />
-                    </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase">Largura Padrão (mm)</label>
+                    <input type="number" className="w-full bg-white border border-gray-200 rounded p-2 text-sm font-bold" value={editando.larguraPadraoMm || ''} onChange={e => setEditando({...editando, larguraPadraoMm: parseFloat(e.target.value)})} />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 mb-1 uppercase">Altura Padrão (mm)</label>
+                    <input type="number" className="w-full bg-white border border-gray-200 rounded p-2 text-sm font-bold" value={editando.alturaPadraoMm || ''} onChange={e => setEditando({...editando, alturaPadraoMm: parseFloat(e.target.value)})} />
                   </div>
                 </div>
               </div>
