@@ -23,4 +23,4 @@ jobs:
 
       - name: Deploy Migrations
         run: |
-          supabase db push --db-url "postgresql://postgres:${{ secrets.SUPABASE_DB_PASSWORD }}@db.${{ secrets.SUPABASE_PROJECT_ID }}.supabase.co:6543/postgres"
+          supabase db push --db-url "postgresql://postgres.cppjodjxudflmhdruibf:${{ secrets.SUPABASE_DB_PASSWORD }}@aws-1-us-west-2.pooler.supabase.com:5432/postgres"
