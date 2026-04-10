@@ -220,59 +220,95 @@ export default function EngenhariaPage() {
                       <button onClick={() => handleRemoveEtapa(etapa.id)} className="text-red-400 hover:text-red-600 p-1"><Trash2 className="w-4 h-4"/></button>
                     </div>
                     
-                    <div className="p-6 space-y-4">
-                      {etapa.itens.map((item, iIdx) => (
-                        <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end bg-white border border-gray-100 p-4 rounded-xl shadow-inner relative group">
-                          <div className="md:col-span-3">
-                             <label className="block text-[10px] font-bold text-gray-400 mb-1">Insumo Base</label>
-                             <select 
-                                className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm font-bold outline-none focus:ring-2 focus:ring-indigo-500"
-                                value={item.insumoId}
-                                onChange={e => updateItem(etapa.id, item.id, { insumoId: e.target.value })}
-                             >
-                                <option value="">Selecione...</option>
-                                {insumos.map(ins => <option key={ins.id} value={ins.id}>{ins.nome} ({ins.unidade})</option>)}
-                             </select>
-                          </div>
+                    <div className="p-6 space-y-8">
+                      {['EXTRUSIONS', 'GLASS', 'COMPONENTS AND HARDWARE'].map(cat => {
+                        const itemsDaCategoria = etapa.itens.filter(it => {
+                          const ins = insumos.find(i => i.id === it.insumoId);
+                          return ins ? ins.categoria === cat : cat === 'COMPONENTS AND HARDWARE' && !it.insumoId;
+                        });
 
-                          <div className="md:col-span-3">
-                             <label className="block text-[10px] font-bold text-gray-400 mb-1">Lógica p/ Quantidade</label>
-                             <select 
-                                className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm font-medium outline-none"
-                                value={item.logica}
-                                onChange={e => updateItem(etapa.id, item.id, { logica: e.target.value as LogicaCalculo })}
-                             >
-                                <option value="LINEAR_L">Pela LARGURA (L)</option>
-                                <option value="LINEAR_A">Pela ALTURA (A)</option>
-                                <option value="PERIMETRO">PELO PERÍMETRO (2L+2A)</option>
-                                <option value="AREA_VAO">PELA ÁREA (LxA)</option>
-                                <option value="FIXO">QUANTIDADE FIXA</option>
-                             </select>
-                          </div>
+                        if (itemsDaCategoria.length === 0 && cat !== 'COMPONENTS AND HARDWARE') return null;
 
-                          <div className="md:col-span-2">
-                             <label className="block text-[10px] font-bold text-gray-400 mb-1">Qtd/Barras</label>
-                             <input type="number" className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm font-bold" value={item.quantidadeBase} onChange={e => updateItem(etapa.id, item.id, { quantidadeBase: parseFloat(e.target.value) })}/>
-                          </div>
+                        return (
+                          <div key={cat} className="space-y-3">
+                             <div className="flex items-center gap-2 mb-2">
+                                <div className={`w-2 h-2 rounded-full ${cat === 'GLASS' ? 'bg-blue-500' : cat === 'EXTRUSIONS' ? 'bg-orange-500' : 'bg-gray-400'}`}></div>
+                                <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{cat}</span>
+                             </div>
+                             
+                             {itemsDaCategoria.map((item, iIdx) => {
+                               const insItem = insumos.find(i => i.id === item.insumoId);
+                               const isGlass = insItem?.categoria === 'GLASS';
 
-                          <div className="md:col-span-2">
-                             <label className="block text-[10px] font-bold text-gray-400 mb-1">Ajuste (mm)</label>
-                             <input type="number" className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm font-bold bg-yellow-50" placeholder="Ex: -45" value={item.ajusteMm} onChange={e => updateItem(etapa.id, item.id, { ajusteMm: parseFloat(e.target.value) })}/>
-                          </div>
+                               return (
+                                <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end bg-white border border-gray-100 p-4 rounded-xl shadow-sm relative group">
+                                  <div className="md:col-span-3">
+                                     <label className="block text-[10px] font-bold text-gray-400 mb-1">Insumo Base</label>
+                                     <select 
+                                        className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm font-bold outline-none focus:ring-2 focus:ring-indigo-500"
+                                        value={item.insumoId}
+                                        onChange={e => updateItem(etapa.id, item.id, { insumoId: e.target.value })}
+                                     >
+                                        <option value="">Selecione...</option>
+                                        {insumos.map(ins => <option key={ins.id} value={ins.id}>{ins.nome} ({ins.unidade})</option>)}
+                                     </select>
+                                  </div>
 
-                          <div className="md:col-span-2 flex justify-end">
-                             <button onClick={() => handleRemoveItem(etapa.id, item.id)} className="bg-red-50 text-red-500 hover:bg-red-500 hover:text-white p-2 rounded transition-all">
-                               <Trash2 className="w-4 h-4"/>
-                             </button>
+                                  <div className="md:col-span-3">
+                                     <label className="block text-[10px] font-bold text-gray-400 mb-1">Lógica p/ Quantidade</label>
+                                     <select 
+                                        className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm font-medium outline-none"
+                                        value={item.logica}
+                                        onChange={e => updateItem(etapa.id, item.id, { logica: e.target.value as LogicaCalculo })}
+                                     >
+                                        <option value="LINEAR_L">Pela LARGURA (L)</option>
+                                        <option value="LINEAR_A">Pela ALTURA (A)</option>
+                                        <option value="PERIMETRO">PELO PERÍMETRO (2L+2A)</option>
+                                        <option value="AREA_VAO">PELA ÁREA (LxA)</option>
+                                        <option value="FIXO">QUANTIDADE FIXA</option>
+                                     </select>
+                                  </div>
+
+                                  <div className="md:col-span-1">
+                                     <label className="block text-[10px] font-bold text-gray-400 mb-1">Quant.</label>
+                                     <input type="number" className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm font-bold" value={item.quantidadeBase} onChange={e => updateItem(etapa.id, item.id, { quantidadeBase: parseFloat(e.target.value) })}/>
+                                  </div>
+
+                                  {isGlass ? (
+                                    <>
+                                      <div className="md:col-span-2">
+                                         <label className="block text-[10px] font-black text-blue-500 mb-1">Ajuste L (mm)</label>
+                                         <input type="number" className="w-full border border-blue-200 rounded px-2 py-1.5 text-sm font-bold bg-blue-50" placeholder="L" value={item.ajusteLMm ?? 0} onChange={e => updateItem(etapa.id, item.id, { ajusteLMm: parseFloat(e.target.value) })}/>
+                                      </div>
+                                      <div className="md:col-span-2">
+                                         <label className="block text-[10px] font-black text-blue-500 mb-1">Ajuste A (mm)</label>
+                                         <input type="number" className="w-full border border-blue-200 rounded px-2 py-1.5 text-sm font-bold bg-blue-50" placeholder="A" value={item.ajusteAMm ?? 0} onChange={e => updateItem(etapa.id, item.id, { ajusteAMm: parseFloat(e.target.value) })}/>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <div className="md:col-span-4">
+                                       <label className="block text-[10px] font-bold text-gray-400 mb-1">Ajuste Global (mm)</label>
+                                       <input type="number" className="w-full border border-gray-200 rounded px-2 py-1.5 text-sm font-bold bg-yellow-50" placeholder="Ex: -45" value={item.ajusteMm} onChange={e => updateItem(etapa.id, item.id, { ajusteMm: parseFloat(e.target.value) })}/>
+                                    </div>
+                                  )}
+
+                                  <div className="md:col-span-1 flex justify-end">
+                                     <button onClick={() => handleRemoveItem(etapa.id, item.id)} className="bg-red-50 text-red-500 hover:bg-red-500 hover:text-white p-2 rounded transition-all">
+                                       <Trash2 className="w-4 h-4"/>
+                                     </button>
+                                  </div>
+                                </div>
+                               );
+                             })}
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                       
                       <button 
                         onClick={() => handleAddItem(etapa.id)}
                         className="w-full border-2 border-dashed border-gray-200 rounded-xl py-3 text-xs font-bold text-gray-400 hover:border-indigo-300 hover:text-indigo-500 transition-all flex items-center justify-center uppercase tracking-widest"
                       >
-                        <Plus className="w-4 h-4 mr-1" /> Adicionar Peça a {etapa.nome}
+                        <Plus className="w-4 h-4 mr-1" /> Adicionar Novo Item a esta Etapa
                       </button>
                     </div>
                   </div>

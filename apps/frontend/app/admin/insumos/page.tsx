@@ -14,6 +14,7 @@ export default function InsumosPage() {
 
   const defaultState: Partial<Insumo> = {
     nome: '',
+    categoria: 'COMPONENTS AND HARDWARE',
     unidade: 'M',
     precoUnitario: 0,
     fatorPerdaPadrao: 1.1,
@@ -29,12 +30,13 @@ export default function InsumosPage() {
   }, []);
 
   const handleSalvar = () => {
-    if(!novo.nome || !novo.unidade) return;
+    if(!novo.nome || !novo.unidade || !novo.categoria) return;
     
     const payload = {
       ...novo,
       id: modoEdicao ? modoEdicao : Date.now().toString(),
       nome: novo.nome,
+      categoria: novo.categoria,
       unidade: novo.unidade as UnidadeMedida,
       precoUnitario: novo.precoUnitario || 0,
       fatorPerdaPadrao: novo.fatorPerdaPadrao || 1.0
@@ -89,8 +91,8 @@ export default function InsumosPage() {
         </div>
         
         <div className="p-6 md:p-8 space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="md:col-span-2">
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+            <div className="md:col-span-3">
               <label className="block text-xs font-black text-gray-500 uppercase mb-2 tracking-widest border-b border-gray-100 pb-1">Identificação (*)</label>
               <input 
                 type="text" 
@@ -102,6 +104,19 @@ export default function InsumosPage() {
             </div>
 
             <div className="md:col-span-1">
+              <label className="block text-xs font-black text-gray-500 uppercase mb-2 tracking-widest border-b border-gray-100 pb-1">Categoria (*)</label>
+              <select 
+                className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50 outline-none focus:border-emerald-500 font-bold"
+                value={novo.categoria}
+                onChange={e => setNovo({...novo, categoria: e.target.value as any})}
+              >
+                <option value="EXTRUSIONS">Extrusões</option>
+                <option value="GLASS">Vidros</option>
+                <option value="COMPONENTS AND HARDWARE">Componentes</option>
+              </select>
+            </div>
+
+            <div className="md:col-span-1">
               <label className="block text-xs font-black text-gray-500 uppercase mb-2 tracking-widest border-b border-gray-100 pb-1">Unidade (*)</label>
               <select 
                 className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50 outline-none focus:border-emerald-500 font-bold"
@@ -110,10 +125,9 @@ export default function InsumosPage() {
               >
                 <option value="M">Metro (m)</option>
                 <option value="M2">Metro² (m²)</option>
-                <option value="M3">Metro³ (m³)</option>
-                <option value="UN">Peça/Unit (un)</option>
+                <option value="UN">Unidade (un)</option>
                 <option value="KG">Quilo (kg)</option>
-                <option value="G">Grama (g)</option>
+                <option value="PACOTE">Pacote</option>
                 <option value="L">Litro (L)</option>
                 <option value="ML">Mililitro (ml)</option>
               </select>
@@ -184,7 +198,7 @@ export default function InsumosPage() {
           <table className="w-full text-left">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 text-[10px] uppercase font-black text-gray-500 tracking-wider">Material Genérico</th>
+                <th className="px-6 py-4 text-[10px] uppercase font-black text-gray-500 tracking-wider">Material / Categoria</th>
                 <th className="px-6 py-4 text-[10px] uppercase font-black text-gray-500 tracking-wider text-center">Unidade</th>
                 <th className="px-6 py-4 text-[10px] uppercase font-black text-gray-500 tracking-wider">3D Básico (AxLxP)</th>
                 <th className="px-6 py-4 text-[10px] uppercase font-black text-gray-500 tracking-wider">Preço Limpo</th>
@@ -196,7 +210,16 @@ export default function InsumosPage() {
                 <tr key={item.id} className={`hover:bg-gray-50 transition-colors group ${modoEdicao === item.id ? 'bg-yellow-50/50' : ''}`}>
                   <td className="px-6 py-4">
                     <div className="font-black text-gray-900 text-base">{item.nome}</div>
-                    <div className="text-orange-600 font-bold text-[10px] mt-1 flex items-center"><TrendingUp className="w-3 h-3 mr-1"/> Fator Perda Acoplado: {item.fatorPerdaPadrao}x</div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter ${
+                        item.categoria === 'GLASS' ? 'bg-blue-100 text-blue-700' :
+                        item.categoria === 'EXTRUSIONS' ? 'bg-orange-100 text-orange-700' :
+                        'bg-gray-100 text-gray-600'
+                      }`}>
+                        {item.categoria}
+                      </span>
+                      <div className="text-orange-600 font-bold text-[10px] flex items-center"><TrendingUp className="w-3 h-3 mr-1"/> {item.fatorPerdaPadrao}x de perda</div>
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-center">
                     <span className="bg-indigo-50 border border-indigo-100 text-indigo-700 px-3 py-1 rounded text-xs font-black uppercase shadow-sm">{item.unidade}</span>

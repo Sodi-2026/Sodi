@@ -1,15 +1,18 @@
 // app/utils/types.ts
 
-export type UnidadeMedida = 'M' | 'M2' | 'M3' | 'UN' | 'KG' | 'G' | 'L' | 'ML';
+export type UnidadeMedida = 'M' | 'M2' | 'M3' | 'UN' | 'KG' | 'G' | 'L' | 'ML' | 'PACOTE';
+
+export type InsumoCategoria = 'EXTRUSIONS' | 'GLASS' | 'COMPONENTS AND HARDWARE';
 
 export interface Insumo {
   id: string;
   nome: string;
+  categoria: InsumoCategoria;
   unidade: UnidadeMedida;
-  precoUnitario: number; // Preço por 1 unidade de medida (ex: preço por metro, preço por litro)
+  precoUnitario: number; // Preço por 1 unidade de medida
   fatorPerdaPadrao: number; // Ex: 1.10 (10% de perda)
   
-  // Propriedades Dimensionais (Opções avançadas para o construtor 3D)
+  // Propriedades Dimensionais
   dimA?: number; // Altura em mm
   dimL?: number; // Largura em mm
   dimP?: number; // Profundidade (Espessura) em mm
@@ -27,9 +30,11 @@ export interface VinculoInsumo {
   id: string;
   insumoId: string;
   logica: LogicaCalculo;
-  quantidadeBase: number; // Ex: usa 2 barras na largura
-  ajusteMm: number;      // Ajuste/Folga em mm (ex: L - 20mm)
-  transpasseMm: number;  // Para vidros ou perfis sobrepostos
+  quantidadeBase: number;
+  ajusteMm: number;      // Ajuste geral (perfis)
+  ajusteLMm?: number;    // Ajuste exclusivo de Largura (vidros)
+  ajusteAMm?: number;    // Ajuste exclusivo de Altura (vidros)
+  transpasseMm: number;
 }
 
 export interface EtapaFabricacao {

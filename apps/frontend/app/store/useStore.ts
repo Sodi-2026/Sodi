@@ -19,11 +19,11 @@ interface AppState {
 
 // Mock inicial baseado no PDF Nilfire para facilitar teste
 const mockInsumos: Insumo[] = [
-  { id: 'i1', nome: 'Perfil Marco 5050 LDN', unidade: 'M', precoUnitario: 35.00, fatorPerdaPadrao: 1.1 },
-  { id: 'i2', nome: 'Perfil Folha 5030 TDN', unidade: 'M', precoUnitario: 28.00, fatorPerdaPadrao: 1.1 },
-  { id: 'i3', nome: 'Vidro Pryodur 11mm', unidade: 'M2', precoUnitario: 1200.00, fatorPerdaPadrao: 1.05 },
-  { id: 'i4', nome: 'Silicone Promaseal A', unidade: 'L', precoUnitario: 85.00, fatorPerdaPadrao: 1.0 },
-  { id: 'i5', nome: 'Fixador 105mm Lug', unidade: 'UN', precoUnitario: 4.50, fatorPerdaPadrao: 1.0 },
+  { id: 'i1', nome: 'Perfil Marco 5050 LDN', categoria: 'EXTRUSIONS', unidade: 'M', precoUnitario: 35.00, fatorPerdaPadrao: 1.1 },
+  { id: 'i2', nome: 'Perfil Folha 5030 TDN', categoria: 'EXTRUSIONS', unidade: 'M', precoUnitario: 28.00, fatorPerdaPadrao: 1.1 },
+  { id: 'i3', nome: 'Vidro Pryodur 11mm', categoria: 'GLASS', unidade: 'M2', precoUnitario: 1200.00, fatorPerdaPadrao: 1.05 },
+  { id: 'i4', nome: 'Silicone Promaseal A', categoria: 'COMPONENTS AND HARDWARE', unidade: 'L', precoUnitario: 85.00, fatorPerdaPadrao: 1.0 },
+  { id: 'i5', nome: 'Fixador 105mm Lug', categoria: 'COMPONENTS AND HARDWARE', unidade: 'UN', precoUnitario: 4.50, fatorPerdaPadrao: 1.0 },
 ];
 
 const mockTipologias: Tipologia[] = [

@@ -34,27 +34,31 @@ export function calcularOrcamentoPro(
       let qtdCalculada = 0;
       let logicaDesc = '';
 
-      const L_final = L + vinculo.ajusteMm + vinculo.transpasseMm;
-      const A_final = A + vinculo.ajusteMm + vinculo.transpasseMm;
+      // Se for vidro, usa os ajustes específicos de L e A. Se não, usa o ajuste global.
+      const adjL = insumo.categoria === 'GLASS' ? (vinculo.ajusteLMm ?? vinculo.ajusteMm) : vinculo.ajusteMm;
+      const adjA = insumo.categoria === 'GLASS' ? (vinculo.ajusteAMm ?? vinculo.ajusteMm) : vinculo.ajusteMm;
+
+      const L_final = L + adjL + vinculo.transpasseMm;
+      const A_final = A + adjA + vinculo.transpasseMm;
 
       // MOTOR DE REGRAS MATEMÁTICAS
       switch (vinculo.logica) {
         case 'LINEAR_L':
           qtdCalculada = (L_final / 1000) * vinculo.quantidadeBase;
-          logicaDesc = `(${L}mm + ajuste) * ${vinculo.quantidadeBase}`;
+          logicaDesc = `(${L}mm + ${adjL}mm) * ${vinculo.quantidadeBase}`;
           break;
         case 'LINEAR_A':
           qtdCalculada = (A_final / 1000) * vinculo.quantidadeBase;
-          logicaDesc = `(${A}mm + ajuste) * ${vinculo.quantidadeBase}`;
+          logicaDesc = `(${A}mm + ${adjA}mm) * ${vinculo.quantidadeBase}`;
           break;
         case 'PERIMETRO':
           qtdCalculada = ((2 * L_final + 2 * A_final) / 1000) * vinculo.quantidadeBase;
-          logicaDesc = `Perímetro * ${vinculo.quantidadeBase}`;
+          logicaDesc = `Perímetro (L+A)*2 * ${vinculo.quantidadeBase}`;
           break;
         case 'AREA_VAO':
         case 'AREA_VIDRO':
           qtdCalculada = ((L_final * A_final) / 1000000) * vinculo.quantidadeBase;
-          logicaDesc = `Área (m2) * ${vinculo.quantidadeBase}`;
+          logicaDesc = `Área (${L_final}x${A_final}) * ${vinculo.quantidadeBase}`;
           break;
         case 'FIXO':
           qtdCalculada = vinculo.quantidadeBase;
