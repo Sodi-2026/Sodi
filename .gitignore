@@ -1,0 +1,22 @@
+# Monorepo root .gitignore
+node_modules/
+*.log
+.DS_Store
+
+# Env files (use os .example como referência)
+.env
+.env.local
+.env.*.local
+
+# Backend build
+apps/backend/dist/
+
+# Frontend build
+apps/frontend/.next/
+apps/frontend/out/
+apps/frontend/.vercel
+apps/frontend/next-env.d.ts
+apps/frontend/*.tsbuildinfo
+
+# Shared build
+packages/shared/dist/

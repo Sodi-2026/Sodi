@@ -1,0 +1,30 @@
+# supabase/config.toml — Configuração do Supabase CLI
+# Documentação: https://supabase.com/docs/reference/cli/config
+#
+# Para iniciar o ambiente local:
+#   npx supabase start
+#
+# Para criar uma migration:
+#   npx supabase migration new <nome_da_migration>
+#
+# Para aplicar migrations no projeto cloud:
+#   npx supabase db push
+
+[api]
+# Porta local do servidor da API Supabase
+port = 54321
+
+[db]
+# Porta local do banco PostgreSQL (via Docker)
+port = 54322
+
+[studio]
+# Porta local do Supabase Studio (dashboard)
+port = 54323
+
+[auth]
+# URL do site para redirecionamentos OAuth
+site_url = "http://localhost:3000"
+
+[storage]
+file_size_limit = "50MiB"
