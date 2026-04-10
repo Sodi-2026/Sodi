@@ -1,13 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  output: "export",
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
   eslint: {
-    // Warnings do not fail the build on Cloudflare
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Type errors are caught locally; skip on CI to speed up deploys
     ignoreBuildErrors: false,
   },
 };
